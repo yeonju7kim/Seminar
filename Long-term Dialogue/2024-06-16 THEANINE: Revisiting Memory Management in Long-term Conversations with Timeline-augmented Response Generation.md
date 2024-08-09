@@ -1,42 +1,39 @@
-# Abstract
-- memory-augmented response generation in the era of LLMs
-- THEANINE, a framework that augments LLMs’ response generation with memory timelines
-- TeaFarm, a counterfactual-driven question-answering pipeline addressing the limitation of G-Eval in long-term conversations
-  - 내가 아는 response generation task가 아닌가?
- 
-# Introduction
-- LLM의 Large windows attention을 써도 최근 utterance의 영향이 큼
-- 대안
-  - condense past conversation summarization &rarr; argument response generation
-    - 문제: growing span of memories can hinder the quality of memory retrieval
-    - updating older memory 해도 information loss
-- 제안
-  - THEANINE
-    - a framework of timeline-augmented c hain-of-thought reasoning for response generation in long-term conversations.
-    - graph structure
-    - Phase 1: memories are linked based on how they relate to each other
-      - LLM을 이용한 dynamically link memory, based on the temporal and cause-effect commonsense relations
-    - Phase 2: retrieve whole memory timeline
-    - Phase 3: response generation
-      - LLM의 CoT reasoning ability 사용
+# 요약
+- 메모리를 이용한 response generation
+- TeaFarm이라는 어떤 평가 방식
+- Motivation: LLM의 Large windows attention을 써도 최근 utterance의 영향이 큼
+- 기존: 이전 대화 요약하고 이용, information loss
+- 제안: HEANINE
+  - COT, graph structure
+  - Phase 1: 메모리 연결
+    - temporal and cause-effect commonsense relations
+  - Phase 2: 전체 메모리 타임라인을 얻음
+  - Phase 3: response generation
+    - LLM의 CoT reasoning ability 사용
 - Contribution
   - THEANINE: 이전 대화 referring 잘함
   - Teafarm: counterfactual driven question answering pipeline
   - TeaBag: MSC, CC를 이용해 만든 데이터셋
 
-# Methodologies
-## Memory Graph Construction (Phase I)
+# 구체적인 Methodologies
+![image](https://github.com/user-attachments/assets/916124ca-80d7-47e6-a57e-e84c552457c2)
+
+### Memory Graph Construction (Phase I)
 ![image](https://github.com/user-attachments/assets/d06b63e6-020a-4fba-9818-7bdaf0900854)
-### Phase I-1: Identifying associative memories for memory linking
+![image](https://github.com/user-attachments/assets/71db172f-2d25-40e3-83a8-a2501c2269f0)
 
-### Phase I-2: Relation-aware memory linking
+- 연상 메모리(associative memories): 비슷한 event나 topic들로
+- Relation-aware memory linking
+  - 사람은 How does an event affect the other? why did this person make that change? 등으로 relation을 판단
+  - cause-effect commonsense relation along with their temporal order
+    - relation은 HinderedBy, Cause, Want, 4 more
+    - 새로운 memory가 들어오면 LLM은 relation을 assign 함.
+  
+### Timeline Retrieval and Timeline Refinement (Phase II)
+![image](https://github.com/user-attachments/assets/1c5ca061-34a8-4a16-ba67-9429cbf7ee48)
 
-- “how does an event affect the other?” or “why did this person make that change?”
-- chronological order
-- cause-effect commonsense relation, along with their temporal order
-  - HinderedBy, Cause, Want, and 4 more
-- 새로운 memory가 들어오면 LLM은 relation을 assign 함.
--  
-## Timeline Retrieval and Timeline Refinement (Phase II)
+- Top-k memory retrieval
+- retrieve raw memory timelines
+- 
 
-## 2.3 Timeline-augmented Response Generation (Phase III)
+### Timeline-augmented Response Generation (Phase III)
