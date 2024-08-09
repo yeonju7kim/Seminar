@@ -1,1 +1,5 @@
-
+# 요약
+- Event perception, Personas extraction, response generation
+  - event memory module: long and short-term memory banks
+  - topic-based retrieval mechanism
+- 기존 연구: historical event summaries, personalized chat, 
